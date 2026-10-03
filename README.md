@@ -1,20 +1,21 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Anita Wambui Mwangi — Portfolio
 
-# Run and deploy your AI Studio app
+React + TypeScript + Vite + Tailwind CSS (v4). Deployed on Vercel.
 
-This contains everything you need to run your app locally.
+## Run locally
 
-View your app in AI Studio: https://ai.studio/apps/drive/1V3ff95O4azCtf9CWV1j1sf9m-Kqp56EB
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build into dist/
+npm run typecheck
+```
 
-## Run Locally
+## Editing content
 
-**Prerequisites:**  Node.js
+Everything on the Work and Case Studies sections comes from one list in `constants.ts` (`PROJECTS`). To add a project, add one object there. The cards, filters, case study tabs and "Recently shipped" panel update automatically.
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- **Private code?** Leave `repoUrl` out. The card shows the `sourceNote` instead of a GitHub button.
+- **Play Store link for Songa:** uncomment `liveUrl` and `liveLabel` on the Songa entry.
+- **Screenshots:** put an image in `public/projects/`, then set `image: '/projects/name.webp'` and `imageAlt` on the project. Only use images you are allowed to show publicly. Without an image, a lightweight CSS illustration is used.
+- **Colors:** edit the tokens at the top of `index.css` (`:root` for dark, `:root[data-theme="light"]` for light).

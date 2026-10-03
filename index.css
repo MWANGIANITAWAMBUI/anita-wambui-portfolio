@@ -1,51 +1,162 @@
-/* Global responsive styles */
+@import "tailwindcss";
+
+/* ---------- Design tokens ----------
+   Palette is drawn from the Mombasa coast: deep Indian Ocean ink,
+   lagoon teal, coral and a touch of sun. Dark is the default; light is a toggle. */
+@theme inline {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-coral: var(--coral);
+  --color-sun: var(--sun);
+  --color-ok: var(--ok);
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #061a21;
+  --surface: #0b2630;
+  --surface-2: #11333f;
+  --line: rgb(190 235 235 / 0.13);
+  --fg: #eaf6f6;
+  --muted: #92b2b8;
+  --accent: #2dd4bf;
+  --on-accent: #032027;
+  --accent-ink: #5eead4;
+  --coral: #ff7a59;
+  --sun: #ffc857;
+  --ok: #34d399;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f1f7f7;
+  --surface: #ffffff;
+  --surface-2: #e5f0f0;
+  --line: rgb(6 40 50 / 0.13);
+  --fg: #08242c;
+  --muted: #476268;
+  --accent: #0f766e;
+  --on-accent: #ffffff;
+  --accent-ink: #0f766e;
+  --coral: #c2410c;
+  --sun: #b45309;
+  --ok: #047857;
+}
+
+/* ---------- Base ---------- */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
 }
 
-html, body {
+body {
   margin: 0;
-  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  max-width: 100vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-* {
-  box-sizing: border-box;
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
-/* Ensure images don't overflow */
 img {
   max-width: 100%;
   height: auto;
 }
 
-/* Fix for iOS Safari 100vh issue */
-@supports (-webkit-touch-callout: none) {
-  .min-h-screen {
-    min-height: -webkit-fill-available;
-  }
+:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-/* Improved touch targets for mobile */
-@media (max-width: 768px) {
-  a, button {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  /* Ensure text doesn't overflow */
-  h1, h2, h3, h4, h5, h6 {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
+.font-display {
+  font-feature-settings: "ss01";
 }
 
-/* Smooth scrolling for reduced motion preference */
+/* ---------- Reusable bits ---------- */
+.section-pad {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+@media (min-width: 768px) {
+  .section-pad { padding-left: 2.5rem; padding-right: 2.5rem; }
+}
+@media (min-width: 1280px) {
+  .section-pad { padding-left: 6rem; padding-right: 6rem; }
+}
+
+/* Cursor-follow glow. Position is written to CSS variables (no React re-render). */
+.spot {
+  position: relative;
+  isolation: isolate;
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+.spot:hover::before { opacity: 1; }
+
+/* Scroll reveal: used sparingly (project cards only) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Case study panel swap: responds to a click, so it is allowed to move */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.panel-in { animation: panel-in 0.4s ease both; }
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); }
+  50% { box-shadow: 0 0 0 7px transparent; }
+}
+.pulse-dot { animation: pulse-dot 2.2s ease-out infinite; }
+
+/* Hide scrollbar on horizontally scrollable tab rows */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  * {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .reveal { opacity: 1; transform: none; }
 }

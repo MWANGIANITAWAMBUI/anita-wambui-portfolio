@@ -1,135 +1,161 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import { ArrowUpRight, BookOpenText, Github, Lock } from 'lucide-react';
 import { Project } from '../types';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import StatusBadge from './StatusBadge';
+import ProjectVisual from './ProjectVisual';
+import { openCaseStudy, spotlightHandlers, useReveal } from '../lib/interactions';
 
-interface Props {
-  project: Project;
-  index: number;
-}
-
-const ProjectCard: React.FC<Props> = ({ project, index }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isEven = index % 2 === 0;
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Immersive parallax for the image
-  const y = useTransform(scrollYProgress, [0, 1], [-120, 120]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.15, 1.05]);
-
+const Chips: React.FC<{ items: string[]; max?: number }> = ({ items, max }) => {
+  const shown = max ? items.slice(0, max) : items;
+  const rest = max ? items.length - shown.length : 0;
   return (
-    <div ref={containerRef} className="group relative w-full border-t border-zinc-200 py-24 md:py-40 hover:bg-white transition-colors duration-1000 px-4 md:px-0">
-      <div className="swiss-grid items-center max-w-[1920px] mx-auto">
-        
-        {/* IMAGE SECTION - Massive presence */}
-        <div className={`col-span-12 lg:col-span-9 ${!isEven ? 'lg:order-2' : ''}`}>
-          {project.link && project.link !== '#' ? (
-            <a 
-              href={project.link} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="block relative aspect-[16/10] md:aspect-[21/9] overflow-hidden bg-zinc-200 shadow-2xl group-hover:shadow-[0_80px_120px_rgba(255,77,0,0.25)] transition-all duration-1000 rounded-sm"
-            >
-              <motion.div style={{ scale }} className="w-full h-full">
-                <motion.img 
-                  style={{ y }}
-                  src={project.image} 
-                  alt={project.title}
-                  className="absolute inset-0 w-full h-[160%] object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
-                />
-              </motion.div>
-              
-              {/* Minimalist Overlay */}
-              <div className="absolute inset-0 bg-[#ff4d00]/5 opacity-40 group-hover:opacity-0 transition-opacity duration-1000"></div>
-              
-              {/* Attention-grabbing Center Indicator */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700">
-                 <div className="w-32 h-32 md:w-36 md:h-36 rounded-full bg-[#ff4d00] text-white flex flex-col items-center justify-center scale-0 group-hover:scale-100 transition-all duration-700 delay-100 shadow-2xl">
-                    <ArrowUpRight size={48} className="group-hover:rotate-45 transition-transform duration-500" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] mt-2">{project.isClientProject ? 'View Case Study' : 'View Project'}</span>
-                 </div>
-              </div>
-            </a>
-          ) : (
-            <div className="block relative aspect-[16/10] md:aspect-[21/9] overflow-hidden bg-zinc-200 shadow-2xl rounded-sm">
-              <motion.div style={{ scale }} className="w-full h-full">
-                <motion.img 
-                  style={{ y }}
-                  src={project.image} 
-                  alt={project.title}
-                  className="absolute inset-0 w-full h-[160%] object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
-                />
-              </motion.div>
-              <div className="absolute inset-0 bg-[#ff4d00]/5 opacity-40 group-hover:opacity-0 transition-opacity duration-1000"></div>
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700">
-                 <div className="px-6 py-3 rounded-full bg-zinc-900/90 text-white flex items-center justify-center scale-0 group-hover:scale-100 transition-all duration-700 delay-100 shadow-2xl">
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em]">Client Project · NDA</span>
-                 </div>
-              </div>
-            </div>
+    <ul className="flex flex-wrap gap-2" aria-label="Technologies">
+      {shown.map((t) => (
+        <li key={t} className="rounded-md border border-line bg-bg/60 px-2.5 py-1 text-xs font-medium text-muted">
+          {t}
+        </li>
+      ))}
+      {rest > 0 && <li className="rounded-md px-1.5 py-1 text-xs font-medium text-muted">+{rest} more</li>}
+    </ul>
+  );
+};
+
+const Actions: React.FC<{ project: Project }> = ({ project }) => (
+  <div className="mt-6 flex flex-wrap items-center gap-3">
+    {project.liveUrl && (
+      <a
+        href={project.liveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition hover:brightness-110 active:scale-[0.98]"
+      >
+        {project.liveLabel ?? 'View live'}
+        <ArrowUpRight size={16} aria-hidden="true" />
+        <span className="sr-only">(opens in a new tab)</span>
+      </a>
+    )}
+    {project.repoUrl && (
+      <a
+        href={project.repoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold transition hover:border-accent hover:text-accent-ink"
+      >
+        <Github size={16} aria-hidden="true" />
+        {project.repoLabel ?? 'View on GitHub'}
+        <span className="sr-only">(opens in a new tab)</span>
+      </a>
+    )}
+    <button
+      type="button"
+      onClick={() => openCaseStudy(project.id)}
+      className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+        project.liveUrl || project.repoUrl
+          ? 'text-muted hover:text-fg'
+          : 'bg-accent text-on-accent hover:brightness-110 active:scale-[0.98]'
+      }`}
+    >
+      <BookOpenText size={16} aria-hidden="true" />
+      Read case study
+      <span className="sr-only"> for {project.title}</span>
+    </button>
+  </div>
+);
+
+const Source: React.FC<{ project: Project }> = ({ project }) =>
+  project.repoUrl ? null : (
+    <p className="mt-4 flex items-center gap-2 text-xs text-muted">
+      <Lock size={13} aria-hidden="true" />
+      {project.sourceNote}
+    </p>
+  );
+
+const ProjectCard: React.FC<{ project: Project; wide?: boolean }> = ({ project, wide }) => {
+  const ref = useReveal<HTMLElement>();
+
+  if (project.featured || wide) {
+    return (
+      <article
+        ref={ref}
+        {...spotlightHandlers()}
+        className="reveal spot group col-span-full overflow-hidden rounded-2xl border border-line bg-surface lg:grid lg:grid-cols-5"
+      >
+        <ProjectVisual
+          kind={project.visual}
+          image={project.image}
+          alt={project.imageAlt ?? `${project.title} app interface`}
+          className="min-h-72 lg:col-span-2 lg:min-h-[28rem]"
+        />
+        <div className="p-6 sm:p-8 lg:col-span-3 lg:p-12">
+          <div className="flex flex-wrap items-center gap-3">
+            <StatusBadge status={project.status} large />
+            {project.featured && <span className="text-sm font-medium text-coral">Featured professional work</span>}
+          </div>
+          <h4 className="mt-5 font-display text-4xl font-bold tracking-tight sm:text-5xl">{project.title}</h4>
+          <p className="mt-1 text-sm text-muted">{project.kindLabel}</p>
+          <p className="mt-5 max-w-[62ch] leading-relaxed text-muted">{project.description}</p>
+
+          {project.caseStudy.timeline && (
+            <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs font-medium" aria-label="Release journey">
+              {project.caseStudy.timeline.map((step, i, arr) => (
+                <li key={step} className="flex items-center gap-2">
+                  <span
+                    className={`rounded-full border px-2.5 py-1 ${
+                      i === arr.length - 1 ? 'border-ok/50 bg-ok/10 text-ok' : 'border-line text-muted'
+                    }`}
+                  >
+                    {step}
+                  </span>
+                  {i < arr.length - 1 && <span aria-hidden="true" className="text-muted">›</span>}
+                </li>
+              ))}
+            </ol>
           )}
 
-          {/* DESCRIPTION MOVED BELOW THE IMAGE */}
-          <div className="mt-12 px-4 md:px-8 xl:px-12">
-            <p className="text-base md:text-lg text-zinc-500 font-light leading-relaxed italic border-l-2 border-zinc-100 pl-6 group-hover:border-[#ff4d00]/30 transition-colors">
-              {project.description}
-            </p>
+          <div className="mt-6">
+            <Chips items={project.technologies} />
           </div>
+          <Actions project={project} />
+          <Source project={project} />
         </div>
+      </article>
+    );
+  }
 
-        {/* TEXT CONTENT SECTION - Title + Technologies only */}
-        <div className={`col-span-12 lg:col-span-3 mt-12 lg:mt-0 px-4 md:px-8 xl:px-12 ${!isEven ? 'lg:order-1' : ''}`}>
-          <div className="space-y-8">
-            <div className="flex items-center gap-4">
-              <span className="text-[12px] font-black text-[#ff4d00] uppercase tracking-[0.8em] whitespace-nowrap">0{index + 1}</span>
-              <div className="flex-1 h-[1px] bg-zinc-100"></div>
-            </div>
-            
-            <div className="space-y-4">
-              <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-tight text-zinc-900 group-hover:text-[#ff4d00] transition-colors duration-500">
-                {project.title}
-              </h3>
-              
-              <div className="flex flex-wrap gap-x-2 gap-y-1">
-                {project.technologies.map(tech => (
-                  <span key={tech} className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
-                    {tech} <span className="text-zinc-200 ml-1">/</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Action link stays with title/technologies */}
-            <div className="pt-6">
-              {project.link && project.link !== '#' ? (
-                <a 
-                  href={project.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="group/link inline-flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.5em] text-zinc-900 transition-all"
-                >
-                  <span className="border-b-2 border-zinc-900 group-hover/link:border-[#ff4d00] group-hover/link:text-[#ff4d00] pb-1 transition-all">
-                    {project.isClientProject ? 'View Details' : 'View on GitHub'}
-                  </span>
-                  <div className="w-10 h-10 rounded-full border border-zinc-900 group-hover/link:bg-[#ff4d00] group-hover/link:border-[#ff4d00] flex items-center justify-center transition-all">
-                    <ArrowUpRight size={18} className="text-zinc-900 group-hover/link:text-white group-hover/link:rotate-45 transition-all duration-500" />
-                  </div>
-                </a>
-              ) : (
-                <span className="inline-flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.5em] text-zinc-400">
-                  Client Project · NDA
-                </span>
-              )}
-            </div>
-          </div>
+  return (
+    <article
+      ref={ref}
+      {...spotlightHandlers()}
+      className="reveal spot group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-accent/50"
+    >
+      <div className="relative">
+        <ProjectVisual
+          kind={project.visual}
+          image={project.image}
+          alt={project.imageAlt ?? `${project.title} interface`}
+          className="aspect-[16/9]"
+        />
+        <div className="absolute left-4 top-4">
+          <StatusBadge status={project.status} />
         </div>
-
       </div>
-    </div>
+      <div className="flex flex-1 flex-col p-6">
+        <h4 className="font-display text-2xl font-bold tracking-tight">{project.title}</h4>
+        <p className="mt-1 text-sm text-muted">{project.kindLabel}</p>
+        <p className="mt-4 text-sm leading-relaxed text-muted">{project.tagline}</p>
+        <p className="mt-3 text-sm">
+          <span className="font-semibold">My role: </span>
+          <span className="text-muted">{project.role}</span>
+        </p>
+        <div className="mt-5">
+          <Chips items={project.technologies} max={5} />
+        </div>
+        <div className="mt-auto">
+          <Actions project={project} />
+          <Source project={project} />
+        </div>
+      </div>
+    </article>
   );
 };
 
