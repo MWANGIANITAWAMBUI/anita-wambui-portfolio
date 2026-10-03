@@ -1,139 +1,133 @@
-
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { HERO_CONTENT } from '../constants';
+import { ArrowDown, ArrowUpRight, Download } from 'lucide-react';
+import { HERO_CONTENT, HERO_HEADLINE, PROJECTS } from '../constants';
+import { openCaseStudy } from '../lib/interactions';
+import StatusBadge from './StatusBadge';
 
-gsap.registerPlugin(ScrollTrigger);
+const SHIPPED_IDS = ['songa', 'corevoo', 'isafari'];
 
 const Hero: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const subtextRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
+  // Soft glow that follows the pointer. rAF-throttled, writes CSS variables only.
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // 1. Entrance Animation
-      const tl = gsap.timeline();
-      tl.from(".hero-line", {
-        y: 200,
-        opacity: 0,
-        duration: 2,
-        ease: 'expo.out',
-        stagger: 0.1
-      })
-      .from(subtextRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'expo.out'
-      }, "-=1.2")
-      .from(".corner-glow", {
-        opacity: 0,
-        scale: 0.8,
-        duration: 2.5,
-        ease: 'expo.out'
-      }, "-=2");
-
-      // 2. Scroll Animation
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-          invalidateOnRefresh: true,
-        }
-      });
-
-      scrollTl.to(".hero-line", {
-        y: (i) => (i + 1) * -120,
-        opacity: 0.1,
-        scale: 0.9,
-        stagger: 0.05,
-      });
-
-      // Background parallax
-      gsap.to(".hero-bg-accent", {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-        y: 300,
-        scale: 1.6,
-        rotate: 15,
-        opacity: 0.15
-      });
-
-      // Corner Glow Parallax
-      gsap.to(".corner-glow", {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 2,
-        },
-        x: 150,
-        y: -150,
-        opacity: 0,
-        scale: 1.2
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
+    const el = ref.current;
+    if (!el || window.matchMedia('(pointer: coarse)').matches) return;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const apply = () => {
+      frame = 0;
+      el.style.setProperty('--hx', `${x}px`);
+      el.style.setProperty('--hy', `${y}px`);
+    };
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      x = e.clientX - r.left;
+      y = e.clientY - r.top;
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    el.addEventListener('pointermove', onMove);
+    return () => {
+      el.removeEventListener('pointermove', onMove);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
+
+  const shipped = SHIPPED_IDS.map((id) => PROJECTS.find((p) => p.id === id)).filter(Boolean) as typeof PROJECTS;
 
   return (
     <section
       id="home"
-      ref={containerRef}
-      className="relative min-h-[110vh] flex flex-col justify-center overflow-hidden pt-32 md:pt-40 pb-20 bg-gradient-to-br from-[#fcfaf7] via-[#f9f7f2] to-[#f2f0eb]"
+      ref={ref}
+      className="section-pad relative flex min-h-[100svh] items-center overflow-hidden pb-16 pt-28 md:pt-32"
     >
-      {/* Decorative gradient mesh layers */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top Right Corner Glow - Adjusted for mobile */}
-        <div className="corner-glow absolute -top-[15%] -right-[20%] md:-right-[10%] w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] max-w-[1000px] max-h-[1000px] bg-[#ff4d00]/15 rounded-full blur-[160px] mix-blend-multiply z-0"></div>
-        
-        <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-[#ff4d00]/5 rounded-full blur-[120px] mix-blend-multiply animate-pulse"></div>
-        <div className="absolute top-[40%] -right-[10%] md:-right-[5%] w-[60%] h-[60%] md:w-[50%] md:h-[50%] bg-[#ff4d00]/5 rounded-full blur-[100px] mix-blend-multiply"></div>
-      </div>
+      {/* Cheap gradient backdrop: no blur filters, no animation */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: [
+            'radial-gradient(520px circle at var(--hx, 72%) var(--hy, 18%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%)',
+            'radial-gradient(900px circle at 105% 0%, color-mix(in srgb, var(--coral) 14%, transparent), transparent 60%)',
+            'linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)',
+          ].join(','),
+          backgroundSize: 'auto, auto, 64px 64px, 64px 64px',
+          maskImage: 'linear-gradient(to bottom, black 55%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent)',
+        }}
+      />
 
-      <div className="swiss-grid relative z-10 px-4 md:px-0">
-        <div className="col-span-12 overflow-hidden">
-          <h1 className="text-[11vw] md:text-[10vw] lg:text-[9vw] font-black leading-[0.8] md:leading-[0.75] tracking-tighter uppercase text-zinc-900">
-            <div className="hero-line block overflow-hidden py-1">Anita Wambui</div>
-            <div className="hero-line block text-[#ff4d00] overflow-hidden py-1 md:py-2 text-[11vw] md:text-[10vw] lg:text-[9vw]">
-              Software
-            </div>
-            <div className="hero-line block text-[#ff4d00] overflow-hidden py-1 md:py-2 text-[11vw] md:text-[10vw] lg:text-[9vw]">
-              Engineer
-            </div>
+      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-7">
+          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-4 py-1.5 text-sm font-medium text-muted">
+            <span aria-hidden="true" className="pulse-dot h-2 w-2 rounded-full bg-ok" />
+            Open to opportunities · Mombasa, Kenya
+          </p>
+
+          <h1 className="mt-7 font-display text-[2.6rem] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
+            Anita Wambui Mwangi
+            <span className="mt-3 block bg-gradient-to-r from-accent-ink via-accent-ink to-coral bg-clip-text text-[0.62em] font-bold leading-[1.1] text-transparent">
+              {HERO_HEADLINE}
+            </span>
           </h1>
-        </div>
-        
-        <div className="col-span-12 lg:col-span-7 lg:col-start-6 mt-12 md:mt-24">
-          <div ref={subtextRef} className="space-y-8 md:space-y-12">
-            <p className="text-lg md:text-3xl font-light leading-relaxed text-zinc-600 max-w-2xl border-l-[6px] md:border-l-[12px] border-[#ff4d00] pl-6 md:pl-10">
-              {HERO_CONTENT}
-            </p>
-            <div className="flex items-center gap-4 md:gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-zinc-400">
-              <span className="w-16 md:w-24 h-[2px] bg-[#ff4d00]"></span>
-              Crafting Digital Excellence
-            </div>
+
+          <p className="mt-7 max-w-[56ch] text-lg leading-relaxed text-muted sm:text-xl">{HERO_CONTENT}</p>
+
+          <div className="mt-9 flex flex-wrap gap-3">
+            <a
+              href="#work"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-accent px-6 font-semibold text-on-accent transition hover:brightness-110 active:scale-[0.98]"
+            >
+              See my work
+              <ArrowDown size={18} aria-hidden="true" />
+            </a>
             <a
               href="/Anita_Wambui_Mwangi_CV.pdf"
               download
-              className="inline-flex items-center gap-3 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white bg-zinc-900 hover:bg-[#ff4d00] transition-colors duration-500 px-6 py-4 md:px-8 md:py-5 rounded-sm"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-line bg-surface/60 px-6 font-semibold transition hover:border-accent"
             >
-              Download Résumé
+              <Download size={18} aria-hidden="true" />
+              Download résumé
             </a>
           </div>
         </div>
-      </div>
 
-      <div className="hero-bg-accent absolute top-[15%] right-[-20%] md:right-[-10%] -z-10 opacity-20 pointer-events-none overflow-hidden">
-          <div className="w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-gradient-to-tr from-[#ff4d00] to-orange-300 rounded-full blur-[200px]"></div>
+        {/* The memorable moment: what has actually shipped */}
+        <aside aria-label="Recently shipped" className="lg:col-span-5">
+          <div className="rounded-2xl border border-line bg-surface/80 p-5 shadow-2xl sm:p-6">
+            <p className="font-display text-lg font-bold">Recently shipped</p>
+            <p className="mt-1 text-sm text-muted">Select a project to read its case study.</p>
+            <ul className="mt-5 space-y-3">
+              {shipped.map((p) => (
+                <li key={p.id}>
+                  <button
+                    type="button"
+                    onClick={() => openCaseStudy(p.id)}
+                    className="group flex w-full items-center justify-between gap-4 rounded-xl border border-line bg-bg/60 p-4 text-left transition hover:-translate-y-0.5 hover:border-accent/60"
+                  >
+                    <span>
+                      <span className="block font-display text-xl font-bold">{p.title}</span>
+                      <span className="mt-0.5 block text-sm text-muted">{p.kindLabel.split(' · ')[0]}</span>
+                    </span>
+                    <span className="flex shrink-0 flex-col items-end gap-2">
+                      <StatusBadge status={p.status} />
+                      <ArrowUpRight
+                        size={18}
+                        aria-hidden="true"
+                        className="text-muted transition group-hover:rotate-12 group-hover:text-accent-ink"
+                      />
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
       </div>
     </section>
   );
