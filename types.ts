@@ -7,12 +7,25 @@ export interface ProjectStatus {
   tone: StatusTone;
 }
 
+export interface Screenshot {
+  /** File in /public/projects/<project-id>/ , e.g. '/projects/nails-by-annie/01-landing.webp' */
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export interface CaseStudy {
   problem: string;
   solution: string;
   impact: string;
   /** Optional ordered stages, e.g. a release journey */
   timeline?: string[];
+  /** Honest note on how it was built (tools, AI assistance, what is a prototype) */
+  howBuilt?: string;
+  /** Things worth knowing that are not finished or not done yet */
+  limitations?: string[];
+  /** Key decisions and what each one protects against */
+  decisions?: { title: string; detail: string }[];
 }
 
 export interface Project {
@@ -39,9 +52,11 @@ export interface Project {
   featured?: boolean;
   /** Drawn in CSS when no screenshot is provided */
   visual: VisualKind;
-  /** Optional screenshot in /public/projects/. Only use images you are allowed to show. */
+  /** Optional card image in /public/projects/. Only use images you are allowed to show. */
   image?: string;
   imageAlt?: string;
+  /** Case-study gallery. The gallery stays hidden until this has at least one image. */
+  screenshots?: Screenshot[];
   caseStudy: CaseStudy;
 }
 

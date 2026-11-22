@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Lock } from 'lucide-react';
-import { PROJECTS } from '../constants';
+import { PROJECTS, PROJECT_GROUPS } from '../constants';
 import { OPEN_CASE_EVENT } from '../lib/interactions';
 import SectionHeading from './SectionHeading';
 import StatusBadge from './StatusBadge';
@@ -49,36 +49,38 @@ const CaseStudies: React.FC = () => {
           intro="Pick a project to see what it needed, what I built or contributed, and what came of it. Team projects are described in terms of my contribution."
         />
 
-        <div
-          role="tablist"
-          aria-label="Choose a project"
-          onKeyDown={onKeyDown}
-          className="no-scrollbar -mx-1 mb-10 flex gap-2 overflow-x-auto px-1 pb-2"
-        >
-          {PROJECTS.map((p) => {
-            const selected = p.id === activeId;
-            return (
-              <button
-                key={p.id}
-                ref={(el) => {
-                  tabRefs.current[p.id] = el;
-                }}
-                role="tab"
-                id={`tab-${p.id}`}
-                aria-selected={selected}
-                aria-controls="case-panel"
-                tabIndex={selected ? 0 : -1}
-                onClick={() => setActiveId(p.id)}
-                className={`min-h-11 shrink-0 rounded-full border px-5 text-sm font-semibold transition ${
-                  selected
-                    ? 'border-accent bg-accent text-on-accent'
-                    : 'border-line text-muted hover:border-accent/60 hover:text-fg'
-                }`}
-              >
-                {p.title}
-              </button>
-            );
-          })}
+        <div role="tablist" aria-label="Choose a project" onKeyDown={onKeyDown} className="mb-10 space-y-4">
+          {PROJECT_GROUPS.map((group) => (
+            <div key={group.id} role="presentation" className="flex flex-wrap items-center gap-2">
+              <span aria-hidden="true" className="w-full text-xs font-semibold uppercase tracking-wider text-muted sm:w-32 sm:shrink-0">
+                {group.filterLabel}
+              </span>
+              {PROJECTS.filter((p) => p.category === group.id).map((p) => {
+                const selected = p.id === activeId;
+                return (
+                  <button
+                    key={p.id}
+                    ref={(el) => {
+                      tabRefs.current[p.id] = el;
+                    }}
+                    role="tab"
+                    id={`tab-${p.id}`}
+                    aria-selected={selected}
+                    aria-controls="case-panel"
+                    tabIndex={selected ? 0 : -1}
+                    onClick={() => setActiveId(p.id)}
+                    className={`min-h-11 rounded-full border px-5 text-sm font-semibold transition ${
+                      selected
+                        ? 'border-accent bg-accent text-on-accent'
+                        : 'border-line text-muted hover:border-accent/60 hover:text-fg'
+                    }`}
+                  >
+                    {p.title}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
 
         <div id="case-panel" role="tabpanel" aria-labelledby={`tab-${project.id}`} key={project.id} className="panel-in">
@@ -128,6 +130,44 @@ const CaseStudies: React.FC = () => {
                   </li>
                 ))}
               </ol>
+            </div>
+          )}
+
+          {project.screenshots && project.screenshots.length > 0 && (
+            <div className="mt-10">
+              <h4 className="mb-4 font-display text-lg font-bold">Screenshots</h4>
+              <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {project.screenshots.map((shot) => (
+                  <li key={shot.src}>
+                    <figure>
+                      <a
+                        href={shot.src}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block overflow-hidden rounded-xl border border-line bg-bg transition hover:border-accent/60"
+                      >
+                        <img src={shot.src} alt={shot.alt} loading="lazy" decoding="async" className="aspect-[16/10] w-full object-cover object-top" />
+                        <span className="sr-only">(opens full size in a new tab)</span>
+                      </a>
+                      {shot.caption && <figcaption className="mt-2 text-sm text-muted">{shot.caption}</figcaption>}
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {project.caseStudy.decisions && (
+            <div className="mt-10">
+              <h4 className="mb-4 font-display text-lg font-bold">Key decisions</h4>
+              <ul className="grid gap-4 md:grid-cols-2">
+                {project.caseStudy.decisions.map((d) => (
+                  <li key={d.title} className="rounded-xl border border-line bg-bg p-5">
+                    <p className="font-semibold">{d.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{d.detail}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
@@ -184,6 +224,30 @@ const CaseStudies: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {(project.caseStudy.howBuilt || project.caseStudy.limitations) && (
+            <div className="mt-10 grid gap-6 border-t border-line pt-10 md:grid-cols-2">
+              {project.caseStudy.howBuilt && (
+                <div>
+                  <h4 className="font-display text-lg font-bold">How it was built</h4>
+                  <p className="mt-3 leading-relaxed text-muted">{project.caseStudy.howBuilt}</p>
+                </div>
+              )}
+              {project.caseStudy.limitations && (
+                <div>
+                  <h4 className="font-display text-lg font-bold">Known limits</h4>
+                  <ul className="mt-3 space-y-2">
+                    {project.caseStudy.limitations.map((l) => (
+                      <li key={l} className="flex gap-3 leading-relaxed text-muted">
+                        <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-sun" />
+                        {l}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

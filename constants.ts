@@ -11,9 +11,9 @@ export const GITHUB_URL = 'https://github.com/MWANGIANITAWAMBUI';
 
 export const HERO_HEADLINE = 'Software engineer building FinTech, mobility and AI products.';
 
-export const HERO_CONTENT = `I turn real business problems into intuitive, scalable software — from payment infrastructure and blockchain-enabled wallets to mobile apps on Google Play and websites for clients.`;
+export const HERO_CONTENT = `I turn real business problems into intuitive, scalable software, from payment infrastructure and blockchain-enabled wallets to mobile apps on Google Play and websites for clients.`;
 
-export const ABOUT_TEXT = `I'm a BBIT graduate who started at ElementPay as a Software Development Intern and was promoted to Junior Software Developer within six months. I work on production systems: payment workflows, blockchain-enabled wallets, transaction dashboards, and the admin tools that keep them running. Outside of that, I build client platforms and personal projects that solve real problems in finance, education, and workplace productivity — and I'm always looking for the next technology worth learning.`;
+export const ABOUT_TEXT = `I'm a BBIT graduate who started at ElementPay as a Software Development Intern and was promoted to Junior Software Developer within six months. I work on production systems: payment workflows, blockchain-enabled wallets, transaction dashboards, and the admin tools that keep them running. Outside of that, I build client platforms and personal projects that solve real problems in finance, education, and workplace productivity. I'm always looking for the next technology worth learning.`;
 
 export const ABOUT_MILESTONES: string[] = [
   'Graduated with a Bachelor of Business Information Technology, Technical University of Mombasa',
@@ -68,7 +68,7 @@ export const PROJECT_GROUPS: ProjectGroup[] = [
     id: 'personal',
     filterLabel: 'Personal',
     title: 'Selected projects',
-    intro: 'Independent and public projects showcasing my frontend development, UI engineering and problem-solving skills.',
+    intro: 'Independent projects showcasing my frontend development, UI engineering and problem-solving skills.',
   },
 ];
 
@@ -81,19 +81,16 @@ export const PROJECTS: Project[] = [
     category: 'professional',
     kindLabel: 'Mobile application · Mobility',
     description:
-      'Contributed to the development and Google Play Store launch of Songa, a Kenya-focused mobility platform for booking and sharing rides. Worked on React Native/Expo features, production configuration, Android builds, testing, and release preparation, helping take the application from development through Play Store testing and launch.',
-    role: 'Junior developer · mobile contribution',
+      'Contributed to the Android release of Songa, a Kenya-focused mobility app, taking it from development builds through Google Play testing tracks to a live launch: EAS production builds, signing, Play Console setup, the store listing and data-safety forms, and fixes for issues found in testing.',
+    role: 'Junior developer · Android release and Play Store launch',
     contributions: [
-      'Contributed to production development of the Songa mobile application',
-      'Worked with React Native and Expo; implemented and refined frontend features and user flows',
-      'Worked on Android production builds using Expo Application Services (EAS)',
-      'Assisted with production environment configuration',
-      'Worked on API integration and production backend connectivity',
-      'Fixed mobile UI and functionality issues found during testing',
-      'Worked through GitHub branches and pull requests',
-      'Supported Google Play Store testing and release preparation',
+      'Produced Android production builds with Expo Application Services (EAS)',
+      'Set up release signing for the Android app',
+      'Set up Google Play Console and managed the testing tracks',
+      'Completed the store listing and the data-safety forms',
+      'Fixed bugs found during testing',
     ],
-    technologies: ['React Native', 'Expo', 'TypeScript', 'REST APIs', 'Android', 'EAS', 'Git', 'GitHub'],
+    technologies: ['React Native', 'Expo', 'EAS', 'Android', 'Google Play Console', 'Git', 'GitHub'],
     status: { label: 'Live on Google Play', tone: 'live' },
     // Add the public Play Store link here when you have it:
     // liveUrl: 'https://play.google.com/store/apps/details?id=...',
@@ -103,11 +100,11 @@ export const PROJECTS: Project[] = [
     visual: 'phone',
     caseStudy: {
       problem:
-        'A Kenya-focused mobility platform needed a production-ready mobile app for booking and sharing rides, and a clear path from a development build to a public Android release.',
+        'A Kenya-focused mobility app needed to get from a working build to a public Android release, with signed builds, a proper testing process and everything Google Play requires for a store listing.',
       solution:
-        'I contributed React Native and Expo features and user flows, API integration with the production backend, production configuration and EAS Android builds. I fixed issues found in testing and worked through GitHub branches and pull requests with the team.',
+        'I produced the EAS production builds and signing, set up Google Play Console and its testing tracks, completed the store listing and data-safety forms, and fixed the issues that testing turned up.',
       impact:
-        'The app moved through internal testing and Play Store preparation to a live Google Play release. I contributed to that journey as part of the team.',
+        'Songa moved through testing to a live Google Play release. I handled the release process as part of the team.',
       timeline: [
         'Development',
         'Testing',
@@ -119,35 +116,122 @@ export const PROJECTS: Project[] = [
     },
   },
   {
+    id: 'elementpay-payments',
+    title: 'ElementPay payment workflows',
+    tagline: 'Bank payouts, refunds and transaction validation.',
+    category: 'professional',
+    kindLabel: 'Production features · FinTech payments',
+    description:
+      "Built payment workflows for ElementPay's applications, including bank payouts, refund management and transaction validation, and integrated the backend APIs behind them in close collaboration with backend engineers.",
+    role: 'Junior developer · frontend features',
+    contributions: [
+      'Built bank payout workflows',
+      'Built refund management',
+      'Implemented transaction validation',
+      'Integrated backend APIs and worked closely with backend engineers throughout',
+      'Tested APIs with Postman and validated backend integrations',
+      'Worked in Agile sprints with code reviews and Git-based pull requests',
+    ],
+    technologies: ['React Native', 'Expo', 'TypeScript', 'REST APIs', 'Postman', 'Git'],
+    status: { label: 'Production feature', tone: 'public' },
+    sourceNote: 'Source code: private · company work',
+    visual: 'phone',
+    caseStudy: {
+      problem:
+        'A payments product has to move money out reliably, let it be reversed when needed, and check transactions before they go through.',
+      solution:
+        'I built the bank payout, refund management and transaction validation features, and connected them to the backend APIs while working closely with the backend engineers.',
+      impact:
+        'These features shipped to production as part of the ElementPay product. I contributed as a junior developer within a team, so I am not reporting company-level numbers.',
+    },
+  },
+  {
+    id: 'elementpay-wallets',
+    title: 'Multi-chain wallets and liquidity validation',
+    tagline: 'Blockchain-enabled wallet features for payments.',
+    category: 'professional',
+    kindLabel: 'Production features · Blockchain and wallets',
+    description:
+      'Implemented blockchain-enabled liquidity validation and multi-chain wallet functionality for ElementPay, and improved wallet management and blockchain balance visibility in the payment experience.',
+    role: 'Junior developer · frontend features',
+    contributions: [
+      'Implemented blockchain-enabled liquidity validation to improve payment reliability',
+      'Built multi-chain wallet functionality',
+      'Improved wallet management and blockchain balance visibility',
+      'Improved the payment user experience around wallets',
+      'Integrated backend APIs with backend engineers',
+    ],
+    technologies: ['React Native', 'Expo', 'TypeScript', 'Web3', 'Wallet integration', 'REST APIs'],
+    status: { label: 'Production feature', tone: 'public' },
+    sourceNote: 'Source code: private · company work',
+    visual: 'phone',
+    caseStudy: {
+      problem:
+        'Payments that involve blockchains depend on there being enough liquidity, and on users being able to see and manage their balances across chains. Without that, payments can fail and users get confused.',
+      solution:
+        'I implemented liquidity validation and multi-chain wallet functionality, and improved wallet management and how blockchain balances are shown.',
+      impact:
+        'The validation was built to improve payment reliability, and wallet balances became easier to see. These features shipped to production.',
+    },
+  },
+  {
+    id: 'elementpay-admin',
+    title: 'Transaction analytics and admin dashboards',
+    tagline: 'Filtering, reporting and monitoring tools for operations.',
+    category: 'professional',
+    kindLabel: 'Production features · Dashboards and admin',
+    description:
+      'Built transaction management with advanced filtering, pagination, analytics and reporting, plus responsive admin dashboards for monitoring users, transactions and operational metrics, with role-based access control.',
+    role: 'Junior developer · intern, then junior developer',
+    contributions: [
+      'Advanced filtering and pagination for transaction lists',
+      'Analytics and reporting for transactions',
+      'Responsive admin dashboards for users, transactions and operational metrics',
+      'Role-based access control and administrative functionality',
+      'Started on transaction dashboards, analytics and pagination as an intern, under mentorship',
+      'Investigated and fixed production bugs and UI issues across mobile and web applications',
+    ],
+    technologies: ['React Native', 'Expo', 'TypeScript', 'REST APIs', 'Responsive design', 'Git'],
+    status: { label: 'Production feature', tone: 'public' },
+    sourceNote: 'Source code: private · company work',
+    visual: 'dashboard',
+    caseStudy: {
+      problem:
+        'Teams that run a payments product need to find and review transactions quickly, see how the system is performing, and give each person access only to what they should see.',
+      solution:
+        'I built filtering, pagination, analytics and reporting for transactions, responsive admin dashboards for monitoring users, transactions and operational metrics, and role-based access control for administrative functions.',
+      impact:
+        'The team gained dashboards to monitor users, transactions and operational metrics in one place. This work grew from intern tasks into production features, and I contributed as part of a team.',
+    },
+  },
+  {
     id: 'isafari',
     title: 'iSafari',
     tagline: 'React Native travel app, being prepared for Google Play.',
     category: 'professional',
     kindLabel: 'Mobile application · Travel',
     description:
-      'Contributed to the development and Android/Google Play Store preparation of iSafari, a React Native mobile application. Worked on frontend features, signup flows, privacy and terms experiences, mobile configuration, testing, and release-readiness improvements.',
-    role: 'Junior developer · mobile contribution',
+      'Contributed to getting iSafari, a React Native travel app, ready for Google Play: in-app Privacy Policy and Terms screens, signup consent, and the release work around them, including EAS builds, signing, Play Console testing tracks, the store listing and data-safety forms.',
+    role: 'Junior developer · Android release preparation',
     contributions: [
-      'Contributed to React Native frontend development',
-      'Worked on mobile UI and user interaction flows',
-      'Implemented an in-app Privacy Policy and Terms experience',
-      'Added and refined signup consent functionality',
-      'Worked on Android application configuration',
-      'Tested mobile flows and identified UI and functional issues',
-      'Worked with Git branches and GitHub pull requests',
-      'Helped prepare the application for Google Play Store distribution',
+      'Produced Android builds with Expo Application Services (EAS) and set up release signing',
+      'Set up Google Play Console and the testing tracks',
+      'Completed the store listing and the data-safety forms',
+      'Built the in-app Privacy Policy and Terms screens',
+      'Added the signup consent step',
+      'Fixed bugs found during testing',
     ],
-    technologies: ['React Native', 'TypeScript', 'Android', 'Git', 'GitHub'],
+    technologies: ['React Native', 'Expo', 'EAS', 'Android', 'Google Play Console', 'Git', 'GitHub'],
     status: { label: 'Play Store preparation', tone: 'prep' },
     sourceNote: 'Source code: private · professional work',
     visual: 'phone',
     caseStudy: {
       problem:
-        'The app needed to be release-ready for Google Play: users had to be able to read the Privacy Policy and Terms in the app and give consent when signing up, and the Android configuration had to be in place.',
+        'The app needed to be ready for Google Play: users had to be able to read the Privacy Policy and Terms in the app and give consent when signing up, and the release itself needed builds, signing, testing tracks and an accurate store listing.',
       solution:
-        'I built the in-app Privacy Policy and Terms experience, added and refined signup consent, worked on Android configuration, and tested mobile flows to find UI and functional issues before release.',
+        'I built the in-app Privacy Policy and Terms screens and the signup consent step, produced the EAS builds and signing, set up Play Console and its testing tracks, completed the store listing and data-safety forms, and fixed issues found in testing.',
       impact:
-        'These changes helped move iSafari toward Google Play distribution. The app is in release preparation and I am not presenting it as live.',
+        'These changes moved iSafari toward Google Play distribution. The app is in release preparation, so I am not presenting it as live.',
     },
   },
 
@@ -167,10 +251,11 @@ export const PROJECTS: Project[] = [
       'Built responsive layouts for desktop, tablet and mobile',
       "Created clear sections presenting the consultancy's services and information",
       'Implemented responsive UI and reusable components',
+      'Added a light and dark theme with a persisted toggle',
       'Deployed the completed website to Vercel',
     ],
-    // Only technologies confirmed for this project belong here. Edit if the stack differs.
-    technologies: ['Responsive design', 'Vercel'],
+    // Confirmed from the project's package.json
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'shadcn/ui', 'Responsive design', 'Vercel'],
     status: { label: 'Live client website', tone: 'live' },
     liveUrl: 'https://corevooo-consultancy.vercel.app/',
     liveLabel: 'View live website',
@@ -217,6 +302,97 @@ export const PROJECTS: Project[] = [
   },
 
   /* ---------------- Personal / selected ---------------- */
+  {
+    id: 'nails-by-annie',
+    title: 'Nails by Annie',
+    tagline: 'Booking and finance app for a mobile nail business.',
+    category: 'personal',
+    kindLabel: 'Full-stack web application · Booking and finance',
+    description:
+      'A booking and business-management web app for an independent mobile nail technician in Kenya. Clients request appointments online against live availability; the owner confirms them, records payments made outside the site (M-Pesa, cash, bank transfer), tracks expenses and sees accurate financial summaries.',
+    role: 'Developer · product, build and documentation',
+    contributions: [
+      'Public site with a five-step booking flow that only offers genuinely free times',
+      'Owner studio: dashboard, bookings, rescheduling, payments, clients, expenses, reports and service catalogue',
+      'Database rules that make double bookings and overpayments impossible, with tests',
+      'Money handled in whole cents, with revenue defined as money actually received',
+      'Unit tests, database rule tests and a CI pipeline that typechecks, tests and builds on every push',
+    ],
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'shadcn/ui', 'Supabase', 'PostgreSQL', 'Zod', 'Vitest', 'Vercel'],
+    status: { label: 'Live web project', tone: 'live' },
+    liveUrl: 'https://nails-by-annie-app-foundation.vercel.app/',
+    liveLabel: 'View live project',
+    sourceNote: 'Source code: private · independent project',
+    visual: 'platform',
+    caseStudy: {
+      problem:
+        'A one-person mobile nail business ran entirely on WhatsApp, calls and memory. Double bookings were possible, nobody could say quickly who still owed what after deposits and part-payments, and money in and out were never tracked together.',
+      solution:
+        'A booking site where clients request real free times, and an owner studio where the diary, payments, expenses and reports live in one place. The rules that must never break (no overlapping confirmed bookings, no overpayment) are enforced by the database itself, not only by the screens.',
+      impact:
+        'One system for the whole business: every request is visible, the diary cannot hold two confirmed bookings at once, and for any date range the owner sees revenue received, expenses, net cash flow and outstanding balances that reconcile.',
+      howBuilt:
+        'The UI was scaffolded with v0 from written prompts, then reviewed and refactored. The backend, business logic, tests and documentation were built with Claude (Anthropic) from requirements I wrote. The problem, users, business rules and priorities come from running the business.',
+      decisions: [
+        {
+          title: 'The database has the last word',
+          detail: 'The app checks first so the owner gets a friendly message; a database constraint and trigger decide last, so bugs and race conditions cannot corrupt bookings or payments.',
+        },
+        {
+          title: 'Revenue means money received',
+          detail: 'Unpaid work shows as outstanding instead of counting as income, so the numbers answer "how much did I actually get?".',
+        },
+        {
+          title: 'Money in whole cents, logic in pure functions',
+          detail: 'Floating-point drift is avoided by summing integer cents, and finance and scheduling rules sit in small tested functions with no UI or database code in them.',
+        },
+        {
+          title: 'No all-powerful key',
+          detail: 'Visitors reach data only through narrow, validated database functions, and owner data sits behind several layers of protection.',
+        },
+      ],
+      limitations: [
+        'Payments are recorded manually: no payment gateway and no refund workflow',
+        'No SMS or email notifications; the owner contacts clients through WhatsApp',
+        'No browser end-to-end tests yet; logic and database rules are tested, the screens are checked by hand',
+      ],
+    },
+  },
+  {
+    id: 'bahari',
+    title: 'Bahari Maritime Academy',
+    tagline: 'Learning platform and exam-prep site for Kenyan maritime officers.',
+    category: 'personal',
+    kindLabel: 'Web application · Maritime education',
+    description:
+      'A learning management platform for maritime training in Kenya, built around deck and engine officers preparing for their professional exams. It combines a public exam-preparation site with role-based portals for trainees, instructors, assessors and administrators.',
+    role: 'Developer · frontend, with the backend in progress',
+    contributions: [
+      'Public site: study materials by topic, small-group clinics, private sessions and a booking checkout',
+      'Trainee portal: dashboard, courses, module player with knowledge checks, and two-tier certificates',
+      'Instructor portal: cohort dashboard and a course builder organised by units and lessons',
+      'Assessor sign-off queue with competence criteria, and an institution overview for admins',
+      'A shared component library and a "nautical chart" visual theme, refined through supervisor review',
+    ],
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express.js'],
+    status: { label: 'In development', tone: 'prep' },
+    sourceNote: 'Source code: private · in development',
+    visual: 'platform',
+    caseStudy: {
+      problem:
+        'Maritime courses combine content that can be taught online with parts that need a physical simulator. Trainees need to study and be assessed online where it is allowed, and institutions need to track progress and sign-off without losing the in-person requirements.',
+      solution:
+        'A role-based platform: trainees study and are tested online; instructors build courses in units and lessons; assessors sign off the practical competence that cannot be taught online; admins see the institution overview. Certificates are planned in two tiers, so online completion can be upgraded once practical assessment is signed off. A bridge resource management course is the pilot used to design the flow.',
+      impact:
+        'The frontend for all four roles is built, and supervisors reviewed it and approved the design direction. A quieter second version of the interface was built to compare against a cleaner reference UI. The backend is next, so there are no usage numbers to report yet.',
+      howBuilt:
+        'The screens currently run on sample data and some actions are simulated (for example payment and certificate download), with the API layer still to be connected. I am building the project end to end, with supervisor guidance on the backend setup.',
+      limitations: [
+        'Backend, authentication and real data are not connected yet',
+        'Certification through the Kenya Maritime Authority is a plan, not something already in place',
+      ],
+    },
+  },
   {
     id: 'inakaso',
     title: 'Inakaso',
@@ -339,6 +515,90 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+/* ------------------------------------------------------------------
+   SCREENSHOTS: one table, one naming rule.
+   Save a screenshot as public/projects/<project-id>/<file> using the exact
+   file name below (replacing the placeholder) and it appears in that
+   project's case study automatically. Delete a line to hide a screenshot.
+   Use demo data only: never real clients, users, tokens or internal URLs.
+------------------------------------------------------------------- */
+export const SCREENSHOT_FILES: Record<string, [file: string, label: string][]> = {
+  'elementpay-payments': [
+    ['01-payment-flow.png', 'A payout or refund screen (test data only)'],
+  ],
+  'elementpay-wallets': [
+    ['01-wallet.png', 'A wallet or balance screen (test data only)'],
+  ],
+  'elementpay-admin': [
+    ['01-dashboard.png', 'Admin dashboard or transaction list (test data only)'],
+  ],
+  fintrack: [
+    ['01-dashboard.png', 'Dashboard with charts and filters'],
+  ],
+  ecologic: [
+    ['01-gameplay.png', 'Food chain gameplay screen'],
+  ],
+  'task-system': [
+    ['01-dashboard.png', 'Productivity dashboard'],
+  ],
+  songa: [
+    ['01-play-store-listing.png', 'The public Google Play listing'],
+    ['02-testing-tracks.png', 'Play Console testing tracks (no private details)'],
+    ['03-eas-builds.png', 'EAS build list'],
+  ],
+  isafari: [
+    ['01-signup-consent.png', 'Signup with consent checkboxes'],
+    ['02-privacy-policy.png', 'In-app Privacy Policy screen'],
+    ['03-terms.png', 'In-app Terms screen'],
+  ],
+  corevoo: [
+    ['01-hero-desktop.png', 'Hero section on desktop'],
+    ['02-services.png', 'Services section'],
+    ['03-process.png', 'Process steps'],
+    ['04-dark-mode.png', 'Dark theme'],
+    ['05-mobile.png', 'Mobile layout'],
+  ],
+  daltoma: [
+    ['01-investor-dashboard.png', 'Investor dashboard (demo data only)'],
+    ['02-onboarding.png', 'Invite-only onboarding'],
+    ['03-document-center.png', 'Document center (no real documents)'],
+  ],
+  'nails-by-annie': [
+    ['01-landing.png', 'Home page'],
+    ['02-services.png', 'Services'],
+    ['03-booking-time.png', 'Booking step 2 with available times'],
+    ['04-booking-confirmation.png', 'Request received'],
+    ['05-dashboard.png', 'Studio overview with a date range'],
+    ['06-appointment-payments.png', 'Appointment with a deposit and balance'],
+    ['07-reports.png', 'Reports page'],
+    ['08-mobile-booking.png', 'Booking on a phone-width screen'],
+  ],
+  bahari: [
+    ['01-landing.png', 'Public landing page'],
+    ['02-trainee-dashboard.png', 'Trainee dashboard'],
+    ['03-module-player.png', 'Module player with a knowledge check'],
+    ['04-course-builder.png', 'Instructor course builder'],
+    ['05-assessor-queue.png', 'Assessor sign-off queue'],
+    ['06-admin-overview.png', 'Institution overview'],
+  ],
+  inakaso: [
+    ['01-home.png', 'Home page'],
+    ['02-browse.png', 'Browsing products'],
+    ['03-outfit.png', 'An AI-generated outfit'],
+  ],
+};
+
+PROJECTS.forEach((p) => {
+  const files = SCREENSHOT_FILES[p.id];
+  if (files) {
+    p.screenshots = files.map(([file, label]) => ({
+      src: `/projects/${p.id}/${file}`,
+      alt: `${p.title}: ${label}`,
+      caption: label,
+    }));
+  }
+});
+
 export const CONTACT: ContactInfo = {
   address: 'Mombasa, Kenya',
   phoneNo: '0115096868',
@@ -357,7 +617,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
 
 export const ACHIEVEMENTS: Achievement[] = [
   { id: 1, title: 'Intern to Junior Developer', description: 'Progressed from Software Development Intern to Junior Software Developer at ElementPay within six months.' },
-  { id: 2, title: 'Live on Google Play', description: 'Contributed to Songa, a mobility app that went from development and testing to a public Google Play release.' },
+  { id: 2, title: 'Shipped to Google Play', description: 'Contributed to the Android release of Songa: EAS builds, signing, Play Console testing tracks and store listing. It is now live on Google Play.' },
   { id: 3, title: 'Production FinTech software', description: 'Delivered production features across FinTech, blockchain and mobility platforms, from payment workflows to admin dashboards.' },
   { id: 4, title: 'Client websites and platforms', description: 'Built a live consultancy website and designed AI-powered and investment platforms for clients.' },
   { id: 5, title: 'Team collaboration', description: 'Worked in Agile teams using Git-based workflows, pull requests and peer code reviews.' },
