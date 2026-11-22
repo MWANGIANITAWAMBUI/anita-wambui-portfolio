@@ -120,7 +120,7 @@ const ProjectVisual: React.FC<{ kind: VisualKind; image?: string; alt?: string; 
           alt={alt ?? ''}
           loading="lazy"
           decoding="async"
-          className="relative h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="relative h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
       ) : (
         <>

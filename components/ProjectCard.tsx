@@ -82,8 +82,8 @@ const ProjectCard: React.FC<{ project: Project; wide?: boolean }> = ({ project, 
       >
         <ProjectVisual
           kind={project.visual}
-          image={project.image}
-          alt={project.imageAlt ?? `${project.title} app interface`}
+          image={project.image ?? project.screenshots?.[0]?.src}
+          alt={project.imageAlt ?? project.screenshots?.[0]?.alt ?? `${project.title} app interface`}
           className="min-h-72 lg:col-span-2 lg:min-h-[28rem]"
         />
         <div className="p-6 sm:p-8 lg:col-span-3 lg:p-12">
@@ -131,8 +131,8 @@ const ProjectCard: React.FC<{ project: Project; wide?: boolean }> = ({ project, 
       <div className="relative">
         <ProjectVisual
           kind={project.visual}
-          image={project.image}
-          alt={project.imageAlt ?? `${project.title} interface`}
+          image={project.image ?? project.screenshots?.[0]?.src}
+          alt={project.imageAlt ?? project.screenshots?.[0]?.alt ?? `${project.title} interface`}
           className="aspect-[16/9]"
         />
         <div className="absolute left-4 top-4">
